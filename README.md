@@ -20,3 +20,17 @@ LIMIT 5;
 1. Select customer_id from the sales table
 2. GROUP BY customer_id to organize aggregate (COUNT) function
 3. COUNT the DISTINCT instances of order dates, to count only the number of days each customer visited Danny's Diner (not the total number of visits, because some customers visited more than once in a single day. Customer A visited twice on 2021-01-01, so DISTINCT is needed to return only one day they visited, instead of 2 times they visited that day)
+
+#### Answer:
+
+| customer_id | days_visited |
+| ----------- | ------------ |
+| A           | 4            |
+| B           | 6            |
+| C           | 2            |
+
+Customer A visited 4 days, Customer B visited 6 days, Customer C visited 2 days.
+
+***
+
+***Question #3: What was the first item from the menu purchased by each customer?
