@@ -33,7 +33,7 @@ Customer A visited 4 days, Customer B visited 6 days, Customer C visited 2 days.
 
 ***
 
-** Question #3: What was the first item from the menu purchased by each customer? **
+**Question #3: What was the first item from the menu purchased by each customer?**
 
 ```sql
 WITH ranked_orders AS (
