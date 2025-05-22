@@ -59,9 +59,9 @@ WITH ranked_orders AS (
 3. The results are GROUPED BY customer_id and product_name because customer C had two orders of curry in their first order, so those are grouped together as a single product.
 
 ### Answer:
-
-| customer_id | order_date | product_name |
-| ----------- | ---------- | ------------ |
-| A           | 2021-01-01 | curry        |
-| B           | 2021-01-01 | curry        |
-| C           | 2021-01-01 | ramen        |
+| customer_id | product_name |
+| ----------- | ------------ |
+| A           | curry        |
+| A           | sushi        |
+| B           | curry        |
+| C           | ramen        |
