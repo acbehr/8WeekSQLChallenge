@@ -33,7 +33,7 @@ Customer A visited 4 days, Customer B visited 6 days, Customer C visited 2 days.
 
 ***
 
-***Question #3: What was the first item from the menu purchased by each customer?
+** Question #3: What was the first item from the menu purchased by each customer? **
 
 ```sql
 WITH ranked_orders AS (
@@ -54,3 +54,11 @@ WITH ranked_orders AS (
 ### Steps:
 1. The ranked_order CTE provides a list of all orders from the sales table, then uses a LEFT JOIN to add the product name to the table and ROW_NUMBER and PARTITION BY to add ascending numbers (1, 2, 3...) to the order dates PARTITIONED BY each customer_id. The ROW_NUMBER column is labled rn.
 2. Now, the first order for each customer is assigned a "1" in the rn column. The outer SELECT pulls the customer_id, order_date, and product_name contained in the ranked_orders CTE for any row that has "1" in the rn column (the first order for each customer_id).
+
+### Answer:
+
+| customer_id | order_date | product_name |
+| ----------- | ---------- | ------------ |
+| A           | 2021-01-01 | curry        |
+| B           | 2021-01-01 | curry        |
+| C           | 2021-01-01 | ramen        |
