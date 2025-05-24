@@ -66,7 +66,9 @@ WITH ranked_orders AS (
 | B           | curry        |
 | C           | ramen        |
 
-**Question 4:  What is the most purchased item on the menu and how many times was it purchased by all customers?**
+***
+
+**Question #4:  What is the most purchased item on the menu and how many times was it purchased by all customers?**
 
 ```sql
 SELECT 
