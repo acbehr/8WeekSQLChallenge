@@ -158,10 +158,10 @@ FROM member_orders
 WHERE rank = 1
 ```
 ### Steps:
-1. The CTE member_orders selects the s.customer_id, s.order_date, m.product_name, joining the menu table m to match product_names using the product_id.
-2. the members table me is joined on customer_id, allowing the WHERE clause to only select orders using that are greater than me.join_date using s.order_date.
+1. The CTE member_orders selects FROM sales (s) the s.customer_id, s.order_date, m.product_name, joining the menu table (m) ON m.product_name using product_id.
+2. JOIN members table (me) ON customer_id. The WHERE clause filters orders after members joined using s.order_date values that are greater than me.join_date for each s.customer_id.
 3. DENSE_RANK() adds ranks to each s.order_date in ascending order PARTITION(ED) BY s.customer_id, making the first s.order_date > me.join_date rank 1.
-4. The statement SELECT(S) customer_id, order_date, and product_name from the member_orders CTE, selecting each order customer_id where rank = 1, the first order_date > the member join date.
+4. The statement SELECT(S) customer_id, order_date, and product_name from the member_orders CTE. The WHERE clause filters each customer_id where rank = 1, the first order_date > the member join date.
 
 ### Answer:
 
@@ -169,6 +169,35 @@ WHERE rank = 1
 | ----------- | ---------- | ------------ |
 | A           | 2021-01-10 | ramen        |
 | B           | 2021-01-11 | sushi        |
+
+***
+**Question 7: Which item was purchased just before the customer became a member?**
+
+```sql
+WITH member_orders AS (
+SELECT
+	s.customer_id,
+    s.order_date,
+    m.product_name,
+	DENSE_RANK() OVER (PARTITION BY s.customer_id ORDER BY s.order_date desc) AS rank
+FROM sales s
+JOIN menu m
+	ON m.product_id = s.product_id
+RIGHT JOIN members me
+	ON me.customer_id = s.customer_id
+WHERE s.order_date < me.join_date
+GROUP BY s.customer_id, s.order_date, m.product_name
+	)
+
+SELECT
+	customer_id,
+    order_date,
+    product_name
+FROM member_orders
+WHERE rank = 1
+```
+
+### Steps:
 
 
 
