@@ -174,7 +174,7 @@ WHERE rank = 1
 **Question 7: Which item was purchased just before the customer became a member?**
 
 ```sql
-WITH member_orders AS (
+WITH pre_member_orders AS (
 SELECT
 	s.customer_id,
     s.order_date,
@@ -193,11 +193,21 @@ SELECT
 	customer_id,
     order_date,
     product_name
-FROM member_orders
+FROM pre_member_orders
 WHERE rank = 1
 ```
 
 ### Steps:
+1. The pre_member_orders CTE contains the sales (s) s.customer_id, s.order_date, and menu (m) m.porduct_name JOIN(ED) on product_id.
+2. The WHERE clause in pre_member_orders selects only the order dates less than members (me) me.join_date.
+3. The DENSE_RANK assigns ranks (1, 2, 3...) to each s.order_date PARTITION(ED) BY s.customer_id in descending order, so the highest date (before the customers became members) is assigned rank 1.
+4. The statement SELECT(S) the customer_id, order_date, and product_name from the pre_member_orders CTE, WHERE rank = 1. Customer A ordered both sushi and curry on their first visit and became a member on their second visit, so both are included because the true order is unknown. Customer B got sushi on their third visit, and became a member between the third and forth visit.
 
+### Answer:
+| customer_id | order_date | product_name |
+| ----------- | ---------- | ------------ |
+| A           | 2021-01-01 | sushi        |
+| A           | 2021-01-01 | curry        |
+| B           | 2021-01-04 | sushi        |
 
 
