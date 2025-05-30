@@ -204,3 +204,34 @@ WHERE rank = 1
 | A           | 2021-01-01 | sushi        |
 | A           | 2021-01-01 | curry        |
 | B           | 2021-01-04 | sushi        |
+
+***
+**8. What is the total items and amount spent for each member before they became a member?**
+
+```sql
+SELECT
+	s.customer_id,
+    COUNT(s.product_id) AS order_total,
+    SUM(m.price) AS total_spend
+FROM sales s
+JOIN menu m ON s.product_id = m.product_id
+LEFT JOIN members me ON s.customer_id = me.customer_id
+WHERE me.join_date IS NULL OR s.order_date < me.join_date
+GROUP BY s.customer_id
+ORDER BY customer_id
+```
+### Steps:
+1. The statement SELECT(S) sales (s) s.customer_id, the COUNT of order_ids, and the SUM of prices from menu (m) as total_spend.
+2. m.price(s) are JOIN(ED) on s.product_id, basically assigning a price column for each order in the the sales table.
+3. The WHERE clause includes me.join_date IS NULL because we want to include customer C orders (we assume they will eventually become a member!), then filters for s.order_date(s) that are less than me.join_date.
+4. The results are GROUP(ED) by customer_id.
+
+### Answer:
+
+| customer_id | order_total | total_spend |
+| ----------- | ----------- | ----------- |
+| A           | 2           | 25          |
+| B           | 3           | 40          |
+| C           | 3           | 36          |
+
+***
