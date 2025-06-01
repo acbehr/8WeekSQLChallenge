@@ -235,3 +235,42 @@ ORDER BY customer_id
 | C           | 3           | 36          |
 
 ***
+**9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?**
+
+```sql
+WITH points AS (
+SELECT
+	s.customer_id,
+    s.product_id,
+    COUNT(s.product_id) as times_ordered,
+    m.price,
+  CASE
+   WHEN s.product_id = 1 THEN ((COUNT(s.product_id) * m.price)*2) * 10
+   ELSE (COUNT(s.product_id) * m.price) * 10
+  END AS points
+  FROM sales s
+JOIN menu m on s.product_id = m.product_id
+GROUP BY s.customer_id,  s.product_id, m.price
+  ORDER BY s.customer_id
+  )
+  
+SELECT
+	customer_id,
+    SUM(points) as points
+FROM points
+GROUP BY customer_id
+```
+### Steps:
+1. The CTE points SELECT(S) the sales (s) s.customer_id, s.product_id, menu (m) m.price, and COUNT(S) the instances of each s.product_id.
+2. The CASE WHEN statement acts like an IF statemet, allowing sushi (product_id 1) orders to receive double points, and all other orders to receive the standard 10 points per dollar spent. This gives the points column which contains the point value of each order_id.
+3. The statement SELECT(S) and GROUP(S) BY customer_id, and gives the SUM of points for each customer_id.  
+
+### Answer:
+
+| customer_id | points |
+| ----------- | ------ |
+| A           | 860    |
+| B           | 940    |
+| C           | 360    |
+
+
